@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Forge Mail — Send emails with surgical precision using the Resend API. A dark-themed, production-ready email sender." />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>Forge Mail — Send Emails with Precision</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- ── Main Card ─────────────────────────────────────── -->
+    <div class="card" role="main">
+
+      <!-- Header -->
+      <header class="card-header">
+        <div class="header-left">
+          <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+              <i data-lucide="zap"></i>
+            </div>
+            <span class="brand-name">Forge Mail</span>
+          </div>
+          <p class="brand-tagline">Send emails with surgical precision.</p>
+        </div>
+        <div class="header-right">
+          <div class="view-tabs" role="tablist">
+            <button class="view-tab active" id="tab-compose" role="tab" aria-selected="true" aria-controls="view-compose">Compose</button>
+            <button class="view-tab" id="tab-inbox" role="tab" aria-selected="false" aria-controls="view-inbox">Inbox</button>
+            <button class="view-tab" id="tab-sent" role="tab" aria-selected="false" aria-controls="view-sent">Sent</button>
+          </div>
+          <div class="status-dot" role="status" aria-label="Service online">ONLINE</div>
+        </div>
+      </header>
+
+      <!-- Compose View -->
+      <div id="view-compose" class="card-body view-section active" role="tabpanel" aria-labelledby="tab-compose">
+        <form id="mail-form" novalidate autocomplete="off">
+
+          <!-- From -->
+          <div class="field with-picker" id="field-from">
+            <input
+              type="text"
+              id="from"
+              name="from"
+              placeholder=" "
+              autocomplete="off"
+              aria-describedby="from-error from-hint"
+              aria-label="From address"
+            />
+            <label for="from">From</label>
+            <button type="button" class="btn-picker" id="btn-picker-from" aria-label="Recent senders" aria-expanded="false">
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="picker-dropdown" id="dropdown-from" role="listbox"></div>
+            <div class="field-meta">
+              <span class="field-error" id="from-error" role="alert" aria-live="polite"></span>
+              <span class="field-hint" id="from-hint">e.g. <em>Alice &lt;alice@example.com&gt;</em> or plain <em>alice@example.com</em></span>
+            </div>
+          </div>
+
+          <!-- Reply-To (optional) -->
+          <div class="field" id="field-reply-to">
+            <input
+              type="text"
+              id="reply-to"
+              name="reply-to"
+              placeholder=" "
+              autocomplete="off"
+              aria-describedby="reply-to-error reply-to-hint"
+              aria-label="Reply-To address (optional)"
+            />
+            <label for="reply-to">Reply-To <span class="field-optional">(optional)</span></label>
+            <div class="field-meta">
+              <span class="field-error" id="reply-to-error" role="alert" aria-live="polite"></span>
+              <span class="field-hint" id="reply-to-hint">Where replies go. Defaults to <em>From</em> if left blank.</span>
+            </div>
+          </div>
+
+          <!-- To -->
+          <div class="field with-picker" id="field-to">
+            <input
+              type="email"
+              id="to"
+              name="to"
+              placeholder=" "
+              autocomplete="off"
+              aria-describedby="to-error"
+              aria-label="To email address"
+            />
+            <label for="to">To</label>
+            <button type="button" class="btn-picker" id="btn-picker-to" aria-label="Recent recipients" aria-expanded="false">
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="picker-dropdown" id="dropdown-to" role="listbox"></div>
+            <div class="field-meta">
+              <span class="field-error" id="to-error" role="alert" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div class="field" id="field-subject">
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder=" "
+              maxlength="255"
+              autocomplete="off"
+              aria-describedby="subject-error subject-counter"
+              aria-label="Email subject"
+            />
+            <label for="subject">Subject</label>
+            <div class="field-meta">
+              <span class="field-error" id="subject-error" role="alert" aria-live="polite"></span>
+              <span class="field-counter" id="subject-counter" aria-live="polite">0 / 255</span>
+            </div>
+          </div>
+
+          <div class="divider" role="separator"></div>
+
+          <!-- HTML Body -->
+          <div class="field textarea-field" id="field-html">
+            <textarea
+              id="html"
+              name="html"
+              placeholder=" "
+              spellcheck="false"
+              aria-describedby="html-error html-counter"
+              aria-label="HTML email body"
+            ></textarea>
+            <label for="html">HTML Content</label>
+            <div class="field-meta">
+              <span class="field-error" id="html-error" role="alert" aria-live="polite"></span>
+              <span class="field-counter" id="html-counter" aria-live="polite">0 bytes</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="actions">
+            <button
+              type="button"
+              id="btn-preview"
+              class="btn btn-preview"
+              aria-expanded="false"
+              aria-controls="preview-section"
+            >
+              <i data-lucide="eye" aria-hidden="true"></i>
+              <span id="preview-btn-text">Preview</span>
+            </button>
+
+            <button
+              type="submit"
+              id="btn-send"
+              class="btn btn-send"
+              aria-live="polite"
+            >
+              <i data-lucide="send" id="send-icon" aria-hidden="true"></i>
+              <span id="send-btn-text">Send Email</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ── Preview Section ─────────────────────────────── -->
+      <section
+        class="preview-section"
+        id="preview-section"
+        aria-label="Email preview"
+        aria-hidden="true"
+      >
+        <div class="preview-inner">
+          <div class="preview-header">
+            <span class="preview-label">
+              <i data-lucide="layout-template" aria-hidden="true" style="display:inline-block;width:13px;height:13px;vertical-align:-2px;margin-right:6px;"></i>
+              Email Preview
+            </span>
+
+            <div class="viewport-toggle" role="group" aria-label="Preview viewport size">
+              <button
+                type="button"
+                class="vp-btn active"
+                id="vp-desktop"
+                aria-pressed="true"
+                title="Desktop view"
+              >
+                <i data-lucide="monitor" aria-hidden="true" style="width:13px;height:13px;"></i>
+                Desktop
+              </button>
+              <button
+                type="button"
+                class="vp-btn"
+                id="vp-mobile"
+                aria-pressed="false"
+                title="Mobile view"
+              >
+                <i data-lucide="smartphone" aria-hidden="true" style="width:13px;height:13px;"></i>
+                Mobile
+              </button>
+            </div>
+          </div>
+
+          <div class="preview-frame-wrapper">
+            <div class="preview-frame-inner" id="preview-frame-inner">
+              <iframe
+                id="preview-iframe"
+                class="preview-iframe"
+                title="Email HTML preview"
+                sandbox="allow-same-origin"
+                aria-label="Rendered email preview"
+              ></iframe>
+            </div>
+          </div>
+
+          <p class="preview-note" role="note">
+            <i data-lucide="alert-triangle" aria-hidden="true" style="width:12px;height:12px;flex-shrink:0;margin-top:1px;color:#f59e0b;"></i>
+            Preview renders your HTML/CSS inline. Some email clients may strip external styles and certain tags.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Inbox View ─────────────────────────────── -->
+      <div id="view-inbox" class="card-body view-section" role="tabpanel" aria-labelledby="tab-inbox" style="display: none;">
+        <div class="inbox-header">
+          <h2>Received Emails</h2>
+          <button type="button" id="btn-refresh-inbox" class="btn btn-refresh" aria-label="Refresh Inbox">
+            <i data-lucide="refresh-cw" aria-hidden="true"></i> Refresh
+          </button>
+        </div>
+        <div class="inbox-container">
+          <div class="inbox-list" id="inbox-list">
+            <!-- Emails will be populated here -->
+          </div>
+          <div class="inbox-detail" id="inbox-detail">
+            <div class="inbox-empty-state" id="inbox-empty-state">
+              <i data-lucide="mail-open" aria-hidden="true"></i>
+              <p>Select an email to view its contents.</p>
+            </div>
+            <div class="inbox-content" id="inbox-content" style="display: none;">
+              <div class="inbox-meta">
+                <div class="inbox-meta-row"><strong>From:</strong> <span id="inbox-detail-from"></span></div>
+                <div class="inbox-meta-row"><strong>To:</strong> <span id="inbox-detail-to"></span></div>
+                <div class="inbox-meta-row"><strong>Subject:</strong> <span id="inbox-detail-subject"></span></div>
+                <div class="inbox-meta-row"><strong>Date:</strong> <span id="inbox-detail-date"></span></div>
+              </div>
+              <div class="inbox-body-switcher">
+                <button type="button" class="btn-body-view active" id="btn-view-html">HTML</button>
+                <button type="button" class="btn-body-view" id="btn-view-text">Text</button>
+              </div>
+              <div class="inbox-body-container">
+                <iframe id="inbox-iframe" class="inbox-iframe" sandbox="allow-same-origin"></iframe>
+                <pre id="inbox-text-pre" class="inbox-text-pre" style="display: none;"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Sent View ──────────────────────────────── -->
+      <div id="view-sent" class="card-body view-section" role="tabpanel" aria-labelledby="tab-sent" style="display: none;">
+        <div class="inbox-header">
+          <h2>Sent Emails</h2>
+          <button type="button" id="btn-refresh-sent" class="btn btn-refresh" aria-label="Refresh Sent">
+            <i data-lucide="refresh-cw" aria-hidden="true"></i> Refresh
+          </button>
+        </div>
+        <div class="inbox-container">
+          <div class="inbox-list" id="sent-list">
+            <!-- Emails will be populated here -->
+          </div>
+          <div class="inbox-detail" id="sent-detail">
+            <div class="inbox-empty-state" id="sent-empty-state">
+              <i data-lucide="send" aria-hidden="true"></i>
+              <p>Select a sent email to view its contents.</p>
+            </div>
+            <div class="inbox-content" id="sent-content" style="display: none;">
+              <div class="inbox-meta">
+                <div class="inbox-meta-row"><strong>From:</strong> <span id="sent-detail-from"></span></div>
+                <div class="inbox-meta-row"><strong>To:</strong> <span id="sent-detail-to"></span></div>
+                <div class="inbox-meta-row"><strong>Subject:</strong> <span id="sent-detail-subject"></span></div>
+                <div class="inbox-meta-row"><strong>Date:</strong> <span id="sent-detail-date"></span></div>
+              </div>
+              <div class="inbox-body-switcher">
+                <button type="button" class="btn-body-view active" id="btn-sent-html">HTML</button>
+                <button type="button" class="btn-body-view" id="btn-sent-text">Text</button>
+              </div>
+              <div class="inbox-body-container">
+                <iframe id="sent-iframe" class="inbox-iframe" sandbox="allow-same-origin"></iframe>
+                <pre id="sent-text-pre" class="inbox-text-pre" style="display: none;"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.card -->
+  </div><!-- /.page-wrapper -->
+
+  <!-- Toast container -->
+  <div id="toast-container" role="region" aria-label="Notifications" aria-live="polite"></div>
+
+  <!-- App logic -->
+  <script src="app.js"></script>
+</body>
+</html>

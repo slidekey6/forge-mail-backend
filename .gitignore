@@ -1,0 +1,36 @@
+# ── Dependencies ────────────────────────────────────────────────
+node_modules/
+.npm
+
+# ── Build output ────────────────────────────────────────────────
+dist/
+build/
+release/
+
+# ── Environment / secrets ────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Runtime data (Gmail OAuth tokens) ───────────────────────────
+backend/.data/
+
+# ── OS & editor files ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/settings.json
+.idea/
+
+# ── Logs ─────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Test coverage ─────────────────────────────────────────────────
+coverage/
+
+# ── TypeScript cache ──────────────────────────────────────────────
+*.tsbuildinfo

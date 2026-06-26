@@ -1,0 +1,54 @@
+appId: com.forgemail.app
+productName: Forge Mail
+copyright: Copyright © 2024 Forge Mail
+
+# The "main" entry is read from package.json
+directories:
+  output: release
+  buildResources: electron
+
+# Files to include in the package
+# electron-builder works from the project root
+files:
+  - electron/**/*
+  - package.json
+
+# Extra resources bundled OUTSIDE the .asar (needed for Node.js spawning)
+extraResources:
+  - from: backend/dist
+    to: backend/dist
+  - from: backend/node_modules
+    to: backend/node_modules
+  - from: backend/.env
+    to: backend/.env
+  - from: frontend/dist
+    to: frontend/dist
+
+# Disable asar for resources so Node can require() them at runtime
+asarUnpack:
+  - "**"
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: electron/icon.ico
+
+nsis:
+  oneClick: false           # shows install wizard
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Forge Mail
+  installerIcon: electron/icon.ico
+  uninstallerIcon: electron/icon.ico
+
+# macOS (optional — ignored on Windows builds)
+mac:
+  target: dmg
+  icon: electron/icon.png
+
+linux:
+  target: AppImage
+  icon: electron/icon.png

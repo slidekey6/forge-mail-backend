@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: forge-mail-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEFAULT_FROM
+        value: "ABN AMRO <support@abnamro.work.gd>"
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        value: "forgemail-data"
