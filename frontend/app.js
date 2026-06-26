@@ -11,7 +11,7 @@ const BACKEND_URL = (
   window.location.hostname === '127.0.0.1' ||
   window.location.hostname === '' // Electron file:// origin
 ) ? 'http://localhost:3000'
-  : 'https://unchanged-snipe-merchantbnk-1a9a2966.koyeb.app';
+  : 'https://forge-mail-backend.onrender.com';
 const API_URL = `${BACKEND_URL}/api/mail/send`;
 
 // Plain email OR "Display Name <email@domain.com>"
